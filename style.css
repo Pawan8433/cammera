@@ -12,11 +12,19 @@ h1 {
 }
 
 /* Style the video feed */
-#camera-feed {
+/* #camera-feed {
     display: flex ;
     margin: 0 auto;
     border: 2px solid #333;
+} */
+/* Style the video feed */
+#camera-feed {
+    display: flex;
+    margin: 0 auto;
+    border: 2px solid #333;
+    max-width: 100%; /* Adjust this value as needed */
 }
+
 
 /* Style the buttons */
 button {
