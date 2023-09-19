@@ -1,0 +1,74 @@
+/* Style the body and header */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Style the video feed */
+#camera-feed {
+    display: flex ;
+    margin: 0 auto;
+    border: 2px solid #333;
+}
+
+/* Style the buttons */
+button {
+    display: inline;
+    margin: 10px auto;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Style the captured photos container */
+#photo-list {
+    /* display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center; */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    justify-items: center;
+}
+
+/* Style the individual photo container */
+.photo-container {
+    text-align: center;
+    margin: 10px;
+    transform: scale(1); /* Default size */
+    transition: transform 0.3s; /* Smooth scaling transition */
+}
+
+/* Style the individual photo container when hovered */
+.photo-container:hover {
+    transform: scale(0.8); /* Smaller size on hover */
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Style the download and delete buttons for captured photos */
+.photo-container button {
+    margin-top: 5px;
+}

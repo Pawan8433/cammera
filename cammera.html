@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   
+    <title>Camera Capture</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Live Camera Capture</h1>
+    <video id="camera-feed" autoplay></video>
+    <button id="start-button">Start Camera</button>
+    <button id="stop-button" disabled>Stop Camera</button>
+    <button id="capture-photo">Capture Photo</button>
+    <div id="photo-list"></div>
+
+    <script>
+        let stream;
+        const videoElement = document.getElementById('camera-feed');
+        const startButton = document.getElementById('start-button');
+        const stopButton = document.getElementById('stop-button');
+        const captureButton = document.getElementById('capture-photo');
+        const photoList = document.getElementById('photo-list');
+        let photoIndex = 0;
+
+        // Function to start the camera
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (cameraStream) {
+                videoElement.srcObject = cameraStream;
+                stream = cameraStream;
+                startButton.disabled = true;
+                stopButton.removeAttribute('disabled');
+            })
+            .catch(function (error) {
+                console.error('Error accessing the camera: ', error);
+            });
+        }
+
+        // Function to stop the camera
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                videoElement.srcObject = null;
+                startButton.removeAttribute('disabled');
+                stopButton.disabled = true;
+            }
+        }
+
+        // Function to capture a photo
+        function capturePhoto() {
+            const canvas = document.createElement('canvas');
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+            // Create an image element to display the captured photo
+            const image = document.createElement('img');
+            image.src = canvas.toDataURL('image/jpeg');
+            image.alt = 'Captured Photo';
+
+            // Create buttons for download and delete
+            const downloadButton = document.createElement('button');
+            downloadButton.innerText = 'Download';
+            downloadButton.addEventListener('click', () => {
+                const a = document.createElement('a');
+                a.href = image.src;
+                a.download = `photo_${photoIndex}.jpg`;
+                a.click();
+            });
+
+            const deleteButton = document.createElement('button');
+            deleteButton.innerText = 'Delete';
+            deleteButton.addEventListener('click', () => {
+                photoList.removeChild(photoContainer);
+            });
+
+            // Create a container for the image and buttons
+            const photoContainer = document.createElement('div');
+            photoContainer.appendChild(image);
+            photoContainer.appendChild(downloadButton);
+            photoContainer.appendChild(deleteButton);
+
+            // Add the image container to the photo list
+            photoList.appendChild(photoContainer);
+
+            // Increment the photo index for the next photo
+            photoIndex++;
+        }
+
+        // Start button click event
+        startButton.addEventListener('click', startCamera);
+
+        // Stop button click event
+        stopButton.addEventListener('click', stopCamera);
+
+        // Capture photo button click event
+        captureButton.addEventListener('click', capturePhoto);
+    </script>
+</body>
+</html>
